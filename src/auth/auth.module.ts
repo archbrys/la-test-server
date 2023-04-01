@@ -5,6 +5,8 @@ import { UsersModule } from '../users/users.module';
 import { JwtModule, JwtService } from '@nestjs/jwt';
 import { LocalStrategy } from './strategies/local.strategy';
 import * as dotenv from 'dotenv';
+import { PassportModule } from '@nestjs/passport';
+import { JwtStrategy } from './strategies/jwt.strategy';
 dotenv.config();
 
 console.log(`${process.env.JWT_SECRET}`);
@@ -16,8 +18,9 @@ console.log(`${process.env.JWT_SECRET}`);
             secret: `${process.env.JWT_SECRET}`,
             signOptions: { expiresIn: '1d' },
         }),
+        PassportModule.register({ defaultStrategy: 'jwt' }),
     ],
-    providers: [AuthService, JwtService, LocalStrategy],
+    providers: [AuthService, JwtService, LocalStrategy, JwtStrategy],
     controllers: [AuthController],
 })
 export class AuthModule {}
