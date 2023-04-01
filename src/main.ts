@@ -4,13 +4,11 @@ import { BadRequestException, ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
     const app = await NestFactory.create(AppModule);
-
     app.useGlobalPipes(
         new ValidationPipe({
             whitelist: true,
             // forbidNonWhitelisted: true,
             exceptionFactory: (errors) => {
-                console.log(errors, 'test');
                 const errorMessages = {};
                 errors.forEach((error) => {
                     if (error.children?.length) {

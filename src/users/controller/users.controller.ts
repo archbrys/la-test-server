@@ -1,6 +1,7 @@
-import { Body, Controller, Get, Logger, Post } from '@nestjs/common';
-import { UsersService } from './users.service';
-import { UserEntity } from './user.entity';
+import { Body, Controller, Get, Logger, Post, UseGuards } from '@nestjs/common';
+import { UsersService } from '../service/users.service';
+import { UserEntity } from '../entities/user.entity';
+import { CreateUserDto } from '../dto/user.dto';
 
 @Controller('users')
 export class UsersController {
@@ -14,7 +15,6 @@ export class UsersController {
     @Post()
     creatUser(@Body() user: UserEntity) {
         // console.log(user);
-        // this.logger.debug(user);
         return this.usersService.createUser(user);
         return 'ss';
     }

@@ -1,8 +1,8 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 
 import * as dotenv from 'dotenv';
-import { Todo } from '../todos/todo.entity';
-import { UserEntity } from '../users/user.entity';
+import { Todo } from '../todos/entities/todo.entity';
+import { UserEntity } from '../users/entities/user.entity';
 dotenv.config();
 
 class ConfigService {
