@@ -7,7 +7,11 @@ import { UsersModule } from './users/users.module';
 import { TodosModule } from './todos/todos.module';
 
 @Module({
-  imports: [TypeOrmModule.forRoot(configService.getTypeOrmConfig()), UsersModule, TodosModule],
+  imports: [
+    TypeOrmModule.forRoot(configService.getTypeOrmConfig()),
+    UsersModule,
+    TodosModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
