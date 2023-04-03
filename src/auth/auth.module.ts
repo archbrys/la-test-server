@@ -9,8 +9,6 @@ import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy } from './strategies/jwt.strategy';
 dotenv.config();
 
-console.log(`${process.env.JWT_SECRET}`);
-
 @Module({
     imports: [
         UsersModule,

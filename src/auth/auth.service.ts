@@ -4,6 +4,7 @@ import { UsersService } from '../users/service/users.service';
 import * as bcrypt from 'bcrypt';
 import { UserEntity } from 'src/users/entities/user.entity';
 import * as dotenv from 'dotenv';
+import { verify } from 'jsonwebtoken';
 dotenv.config();
 
 @Injectable()
@@ -34,7 +35,6 @@ export class AuthService {
     }
 
     async login(user: any) {
-        console.log(user);
         const payload = { username: user.username, id: user.id };
 
         return {
@@ -42,5 +42,11 @@ export class AuthService {
                 secret: process.env.JWT_SECRET,
             }),
         };
+    }
+
+    decode(token: string) {
+        const decoded = verify(token, process.env.JWT_SECRET);
+
+        return decoded;
     }
 }
