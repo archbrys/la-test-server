@@ -32,42 +32,47 @@
 $ yarn install
 ```
 
+## Setup Database
+
+```
+1.  Install PostgreSQL database with pgAdmin
+2.  Update .env variables with your database credentials
+```
+
 ## Running the app
 
 ```bash
-# development
-$ yarn run start
 
-# watch mode
+# development and watch mode
 $ yarn run start:dev
 
 # production mode
 $ yarn run start:prod
 ```
 
-## Test
+## API path
 
 ```bash
-# unit tests
-$ yarn run test
+$ Auth
+# localhost:3000/api/auth/login
+# localhost:3000/api/auth/register
 
-# e2e tests
-$ yarn run test:e2e
-
-# test coverage
-$ yarn run test:cov
+$ Todo
+# GET localhost:3000/api/todos
+# POST localhost:3000/api/todos
+# PATCH localhost:3000/api/todos/11
+# PATCH localhost:3000/api/todos/29?order=28
+# DELETE localhost:3000/api/todos/33
 ```
 
 ## Support
 
 Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
 
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
 ## License
 
 Nest is [MIT licensed](LICENSE).
+
+```
+
+```
