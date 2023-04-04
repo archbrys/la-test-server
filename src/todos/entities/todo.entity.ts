@@ -1,19 +1,27 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { UserEntity } from '../../users/entities/user.entity';
+import {
+    Column,
+    Entity,
+    Generated,
+    ManyToOne,
+    PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity({ name: 'todos' })
-export class Todo {
+export class ToDoEntity {
     @PrimaryGeneratedColumn()
-    id: number;
+    id: string;
 
     @Column()
-    task: string;
+    title: string;
 
     @Column()
     description: string;
 
-    constructor(todo: { task: string; description: string }) {
-        const { task, description } = todo || {};
-        this.task = task;
-        this.description = description;
-    }
+    @Column()
+    @Generated('increment')
+    order: number;
+
+    @ManyToOne(() => UserEntity, (user) => user.todos)
+    user: UserEntity;
 }

@@ -1,7 +1,7 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 
 import * as dotenv from 'dotenv';
-import { Todo } from '../todos/entities/todo.entity';
+import { ToDoEntity } from '../todos/entities/todo.entity';
 import { UserEntity } from '../users/entities/user.entity';
 dotenv.config();
 
@@ -41,7 +41,7 @@ class ConfigService {
             password: this.getValue('POSTGRES_PASSWORD'),
             database: this.getValue('POSTGRES_DATABASE'),
             synchronize: true,
-            entities: [UserEntity, Todo],
+            entities: [UserEntity, ToDoEntity],
             ssl: this.isProduction(),
         };
     }

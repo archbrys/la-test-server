@@ -1,10 +1,11 @@
 import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { UsersService } from '../users/service/users.service';
+import { UsersService } from '../../users/service/users.service';
 import * as bcrypt from 'bcrypt';
-import { UserEntity } from 'src/users/entities/user.entity';
+import { UserEntity } from '../../users/entities/user.entity';
 import * as dotenv from 'dotenv';
 import { verify } from 'jsonwebtoken';
+import { JwtPayload } from '../auth.interface';
 dotenv.config();
 
 @Injectable()
@@ -18,7 +19,7 @@ export class AuthService {
 
     async validateUser(username: string, password: string): Promise<any> {
         const user = await this.usersService.findByUsername(username);
-
+        console.log(user);
         if (user && (await bcrypt.compare(password, user.password))) {
             const { password, ...result } = user;
             return result;
@@ -27,7 +28,7 @@ export class AuthService {
     }
 
     async validateUserById(userId: string): Promise<UserEntity> {
-        const user = await this.usersService.getOne(userId);
+        const user = await this.usersService.findOne(userId);
         if (user) {
             return user;
         }
@@ -46,7 +47,10 @@ export class AuthService {
 
     decode(token: string) {
         const decoded = verify(token, process.env.JWT_SECRET);
-
-        return decoded;
+        const { id } = decoded as JwtPayload;
+        if (!id) {
+            throw new UnauthorizedException();
+        }
+        return decoded as JwtPayload;
     }
 }

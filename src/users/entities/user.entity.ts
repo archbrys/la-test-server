@@ -1,37 +1,21 @@
 import { MinLength } from 'class-validator';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { ToDoEntity } from '../../todos/entities/todo.entity';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { User } from '../user';
 
 @Entity({ name: 'users' })
-export class UserEntity {
+export class UserEntity extends User {
     @PrimaryGeneratedColumn()
-    id: number;
+    id: string;
 
     @Column({ unique: true })
     @MinLength(1, { message: 'Username is required' })
     username: string;
 
-    @Column()
+    @Column({ type: 'varchar', length: 255, select: false })
     @MinLength(1, { message: 'Password is required' })
     password: string;
 
-    @Column()
-    @MinLength(1, { message: 'First name is required' })
-    firstName: string;
-
-    @Column()
-    @MinLength(1, { message: 'Last name is required' })
-    lastName: string;
-
-    constructor(user: {
-        firstName: string;
-        lastName: string;
-        username: string;
-        password: string;
-    }) {
-        const { firstName, lastName, username, password } = user || {};
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.username = username;
-        this.password = password;
-    }
+    @OneToMany('todos', 'todo')
+    todos: ToDoEntity[];
 }

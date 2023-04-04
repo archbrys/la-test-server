@@ -1,10 +1,8 @@
 import {
     BadRequestException,
-    Inject,
     Injectable,
     Logger,
     UnprocessableEntityException,
-    forwardRef,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -20,11 +18,11 @@ export class UsersService {
     ) {}
     private readonly logger = new Logger(UsersService.name);
 
-    findUsers() {}
-
     async createUser(user: Partial<UserEntity>) {
         try {
-            this.logger.debug(user);
+            if (user === null) {
+                throw new UnprocessableEntityException();
+            }
             const hashedPassword = await bcrypt.hash(user.password, 10);
             this.logger.debug(hashedPassword);
             const result = this.userRepository.create({
@@ -34,31 +32,30 @@ export class UsersService {
 
             const data = await this.userRepository.save(result);
 
-            const returnUser = await this.getOne(getId(result));
-
-            // this.logger.debug(returnUser);
+            const returnUser = await this.findOne(getId(result));
 
             if (!returnUser) throw new UnprocessableEntityException();
 
             return { ...returnUser, password: user.password };
         } catch (err) {
-            // this.logger.debug(err.detail);
             if (/(username)[\s\S]+(already exists)/.test(err.detail)) {
                 throw new BadRequestException({
-                    error: {
-                        email: 'Username already exists.',
-                    },
+                    username: 'Username already exists.',
                 });
             }
             throw err;
         }
     }
 
-    async findByUsername(username: string): Promise<UserEntity | undefined> {
-        return this.userRepository.findOne({ where: { username } });
+    async findByUsername(username: string) {
+        return this.userRepository
+            .createQueryBuilder('user')
+            .where('(user.username = :username)', { username: username })
+            .addSelect('user.password')
+            .getOneOrFail();
     }
 
-    async getOne(id: string) {
+    async findOne(id: string) {
         const query = this.userRepository
             .createQueryBuilder('user')
             .where('(user.id = :id)', { id: id });
