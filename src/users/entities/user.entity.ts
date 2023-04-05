@@ -1,10 +1,9 @@
 import { MinLength } from 'class-validator';
 import { ToDoEntity } from '../../todos/entities/todo.entity';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { User } from '../user';
 
 @Entity({ name: 'users' })
-export class UserEntity extends User {
+export class UserEntity {
     @PrimaryGeneratedColumn()
     id: string;
 
